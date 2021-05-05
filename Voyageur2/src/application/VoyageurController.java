@@ -87,7 +87,7 @@ public class VoyageurController implements Initializable {
  	// Placer les voyageurs dans une observable list
  	public ObservableList<Voyageur> VoyageurData = FXCollections.observableArrayList();
 
- 	// Creer une méthode pour accéder à la liste des étudiants
+ 	// Creer une méthode pour accéder à la liste des voyageurs
  	public ObservableList<Voyageur> getvoyageurData() {
  		return VoyageurData;
  	}
