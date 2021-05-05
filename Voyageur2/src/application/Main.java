@@ -1,3 +1,9 @@
+/*auteur: Farah Mansour
+Date: 05/05/2021
+Déscription: En utilisant mes connaissances de JavaFX acquises  durant l’année, j’ai fait une application qui 
+permet de réaliser une liste de voyageurs contenant leurs noms, prénoms, âges, destinations, numéros de vol ainsi que leurs 
+raisons pour voyager. Je n’ai pas fait de statistiques car je crois que ça ne servira a rien dans ce contexte.*/
+
 package application;
 	
 import javafx.application.Application;
