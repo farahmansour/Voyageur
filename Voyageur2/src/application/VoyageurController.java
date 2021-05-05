@@ -109,7 +109,7 @@ public class VoyageurController implements Initializable {
 		btnClear.setDisable(true);
 		
 		showVoyageur(null);
-		// Mettre à jour l'affichage d'un étudiant séléctionné
+		// Mettre à jour l'affichage d'un voyageur séléctionné
 				voyageursTable.getSelectionModel().selectedItemProperty()
 						.addListener((observable, oldValue, newValue) -> showVoyageur(newValue));
 	}
@@ -189,6 +189,7 @@ public class VoyageurController implements Initializable {
 		// Mise à jour d'un voyageur
 		@FXML
 		public void updateVoyageur() {
+			
 			// Vérifier si un champ n'est pas vide
 			if (noEmptyInput()) {
 				Voyageur voyageur = voyageursTable.getSelectionModel().getSelectedItem();
