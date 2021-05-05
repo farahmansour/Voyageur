@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="600.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.VoyageurController">
+<AnchorPane prefHeight="600.0" prefWidth="650.0" stylesheets="@../../../../../eclipse-workspacefx/Etudiants/src/application/bootstrap3.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.VoyageurController">
    <children>
       <Text layoutX="273.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Voyageurs">
          <font>
@@ -26,7 +26,7 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <GridPane layoutX="92.0" layoutY="281.0" prefHeight="175.0" prefWidth="448.0">
+      <GridPane layoutX="92.0" layoutY="277.0" onKeyPressed="#verifNum" prefHeight="175.0" prefWidth="448.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="219.0" minWidth="10.0" prefWidth="109.0" />
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="340.0" minWidth="10.0" prefWidth="339.0" />
@@ -47,19 +47,20 @@
             <Label text="Raison" GridPane.rowIndex="4" />
             <Label text="Numéro de Vol" GridPane.rowIndex="5" />
             <TextField fx:id="txtPrenom" GridPane.columnIndex="1" />
-            <TextField fx:id="txtNom" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="txtNom" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <TextField fx:id="txtAge" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <TextField fx:id="txtDest" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <ComboBox fx:id="cboRaison" prefHeight="27.0" prefWidth="206.0" promptText="Raison(s) pour votre voyage" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             <TextField fx:id="txtNumvol" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <TextField fx:id="txtNom" GridPane.columnIndex="1" GridPane.rowIndex="1" />
          </children>
       </GridPane>
       <HBox layoutX="273.0" layoutY="498.0" spacing="10.0">
          <children>
-            <Button fx:id="btnAjouter" layoutX="172.0" layoutY="451.0" mnemonicParsing="false" onAction="#ajouter" text="Ajouter" />
-            <Button fx:id="btn" mnemonicParsing="false" text="Modifier" />
-            <Button fx:id="btnEffacer" mnemonicParsing="false" text="Effacer" />
-            <Button fx:id="btnClear" mnemonicParsing="false" onAction="#clearFields" text="Recommencer" />
+            <Button fx:id="btnAjouter" layoutX="172.0" layoutY="451.0" mnemonicParsing="false" onAction="#ajouter" styleClass="warning" text="Ajouter" />
+            <Button fx:id="btnModifier" mnemonicParsing="false" onAction="#updateVoyageur" styleClass="warning" text="Modifier" />
+            <Button fx:id="btnEffacer" mnemonicParsing="false" onAction="#deleteVoyageur" styleClass="danger" text="Effacer" />
+            <Button fx:id="btnClear" mnemonicParsing="false" onAction="#clearFields" styleClass="warning" text="Recommencer" />
          </children>
       </HBox>
       <MenuBar>

@@ -2,6 +2,7 @@ package application;
 
 import java.io.File;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
 
@@ -16,6 +17,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -72,7 +74,7 @@ public class VoyageurController implements Initializable {
     private TextField txtNumvol;
 
     @FXML
-    private Button btn;
+    private Button btnModifier;
 
     @FXML
     private TextField txtNom;
@@ -101,15 +103,42 @@ public class VoyageurController implements Initializable {
 		ageColumn.setCellValueFactory(new PropertyValueFactory<>("Age"));
 		numvolColumn.setCellValueFactory(new PropertyValueFactory<>("Numvol"));
 		raisonColumn.setCellValueFactory(new PropertyValueFactory<>("Raison"));
-		
 		voyageursTable.setItems(VoyageurData);
+		btnModifier.setDisable(true);
+		btnEffacer.setDisable(true);
+		btnClear.setDisable(true);
 		
 		showVoyageur(null);
+		// Mettre à jour l'affichage d'un étudiant séléctionné
+				voyageursTable.getSelectionModel().selectedItemProperty()
+						.addListener((observable, oldValue, newValue) -> showVoyageur(newValue));
 	}
-		
+	
+	@FXML
+	public void verifNum() 
+	// méthode pour trouver des inputs non numériques
+	{
+		txtAge.textProperty().addListener((observable, oldValue, newValue) -> {
+			if (!newValue.matches("^[0-9](\\.[0-9]+)?$")) {
+				txtAge.setText(newValue.replaceAll("[^\\d*\\.]", "")); 
+
+	// si le input est non numérique, ca le remplace
+			}
+		});
+		txtNumvol.textProperty().addListener((observable, oldValue, newValue) -> {
+			if (!newValue.matches("^[0-9](\\.[0-9]+)?$")) {
+				txtNumvol.setText(newValue.replaceAll("[^\\d*\\.]", "")); 
+				
+			}
+		});
+	}
+
 		// Ajouter un voyageur
 		@FXML
 		void ajouter() {
+			
+			//Verifier si un champ n'est pas vide
+			if (noEmptyInput()) {
 			Voyageur tmp = new Voyageur();
 			tmp = new Voyageur();
 			tmp.setNom(txtNom.getText());
@@ -120,8 +149,11 @@ public class VoyageurController implements Initializable {
 			tmp.setRaison(cboRaison.getValue());
 			
 			VoyageurData.add(tmp);
-			
+			btnModifier.setDisable(false);
+			btnEffacer.setDisable(false);
+			btnClear.setDisable(false);
 			clearFields();
+			}
 		}
 		
 		// Effacer le contenu des champs
@@ -154,7 +186,71 @@ public class VoyageurController implements Initializable {
 				clearFields();
 			}
 		}
-	
+		// Mise à jour d'un voyageur
+		@FXML
+		public void updateVoyageur() {
+			// Vérifier si un champ n'est pas vide
+			if (noEmptyInput()) {
+				Voyageur voyageur = voyageursTable.getSelectionModel().getSelectedItem();
+
+				voyageur.setNom(txtNom.getText());
+				voyageur.setPrenom(txtPrenom.getText());
+				voyageur.setDestination(txtDest.getText());
+				voyageur.setAge(Double.parseDouble(txtAge.getText()));
+				voyageur.setNumvol(Double.parseDouble(txtNumvol.getText()));
+				voyageur.setRaison(cboRaison.getValue());
+				voyageursTable.refresh();
+			}
+		}
+
+		// Effacer un voyageur
+		@FXML
+		public void deleteVoyageur() {
+			int selectedIndex = voyageursTable.getSelectionModel().getSelectedIndex();
+			if (selectedIndex >= 0) {
+				Alert alert = new Alert(AlertType.CONFIRMATION);
+				alert.setTitle("Effacer");
+				alert.setContentText("confirmer la suprimassion!");
+				Optional<ButtonType> result = alert.showAndWait();
+				if (result.get() == ButtonType.OK)
+					voyageursTable.getItems().remove(selectedIndex);
+			}
+
+		}
+
+		// vérifier champs vides
+		private boolean noEmptyInput() {
+			String errorMessage = "";
+			if (txtNom.getText().trim().equals("")) {
+				errorMessage += "Le champ nom ne doit pas etre vide! \n";
+			}
+			if (txtPrenom.getText() == null || txtPrenom.getText().length() == 0) {
+				errorMessage += "Le champ prenom ne doit pas etre vide! \n";
+			}
+			if (txtDest.getText() == null || txtDest.getText().length() == 0) {
+				errorMessage += "Le champ déstination ne doit pas etre vide! \n";
+			}
+			if (txtAge.getText() == null || txtAge.getText().length() == 0) {
+				errorMessage += "Le champ age doit pas etre vide! \n";
+			}
+			if (txtNumvol.getText() == null || txtNumvol.getText().length() == 0) {
+				errorMessage += "Le champ numéro de vol doit pas etre vide! \n";
+			}
+			if (cboRaison.getValue() == null) {
+				errorMessage += "Le champ raison doit pas etre vide! \n";
+			}
+			if (errorMessage.length() == 0) {
+				return true;
+			} else {
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Champs manquants");
+				alert.setHeaderText("Compléter les champs manquants");
+				alert.setContentText(errorMessage);
+				alert.showAndWait();
+				return false;
+			}
+		}
+
 
 //SAUVEGARDE DE DONNÉES
 
